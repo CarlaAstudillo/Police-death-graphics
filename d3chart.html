@@ -1,0 +1,305 @@
+ 
+<head>
+<title>Stronger NJ Business Grant Program</title>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+</head>
+<style type="text/css">
+ /* Start css for D3 Graph for twitter Index */
+ .d3chart {
+  font-family: 'Open Sans', sans-serif;
+ }
+
+ .d3chart p {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+ }
+div#chart{
+  max-width: 100%;
+  width: auto;
+  
+}
+.legend {
+font-size: 12px;
+  color: #666;
+  }
+
+.bar rect {
+    stroke: #fff;
+    shape-rendering: crispEdges;
+}
+
+
+
+.bar rect.total2 {
+    fill: #818C30;
+}
+
+.bar rect.applications {
+    fill: #F27244;
+}
+
+.bar:hover rect.total2 {
+    fill: #636E14;
+}
+
+.bar:hover rect.applications {
+    fill: #BD4902;
+}
+
+
+.bar text {
+    font-size: 12px;
+    fill: #FFF;
+}
+
+.axis line {
+    stroke: #ccc;
+    stroke-width: 1;
+}
+
+line.median {
+    stroke: #777;
+    stroke-width: 1;
+}
+.tick text{
+  font-size: 11px;
+
+}
+.d3chart{
+  width:100%; 
+}
+
+.bar text.name {
+  fill: #333;
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.bar text.total {
+  
+  font-size:13px;
+
+}
+
+.bar text.total2 {
+  
+  font-size:13px;
+
+}
+
+.x.axis path {
+  fill: none; stroke: black; shape-rendering: crispEdges;
+}
+
+
+/* End css for D3 Graph for twitter Index */ 
+</style>
+<body>
+<div class="d3chart">
+  <h3>Stronger NJ Business Grant Program Applications</h3>
+    <div id="chart"></div>
+    <p>Source: New Jersey Division of Consumer Affairs</p>
+  </body>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript">
+  var margin = {top: 30, right: 0, bottom: 30, left: 60}
+  , width = parseInt(d3.select('#chart').style('width'), 10)
+  , width = width - margin.left - margin.right
+  , height = 400 // placeholder
+  , barHeight = 30
+  , spacing = 28
+  , spacing2 = 18
+  , amount = d3.format();
+var mydata = [{"Cname":"June 2014","Approved":593,"Received":1584, "Limbo": 991, "space":-58},{"Cname":"Dec. 2013", "Approved":45, "Received":197, "Limbo": 152,"space":-37},{"Cname":"June 2013*","Approved":14,"Received":0, "Limbo": 0,"space":20}];
+
+
+
+  // scales and axes
+  var x = d3.scale.linear()
+  .range([0, width])
+  .domain([0,Math.max.apply(Math,mydata.map(function(o){return o.Received;}))+50]); // hard-coding this because I know the data
+  var y = d3.scale.ordinal();
+
+  var xAxis = d3.svg.axis()
+  .scale(x)
+  .tickFormat(amount);
+
+  // create the chart
+  var chart = d3.select('#chart').append('svg')
+  .style('width', '100%')
+  .append('g')
+  .attr('transform', 'translate(' + [margin.left, margin.top] + ')');
+
+
+// add legend   
+  var legend = chart.append("g")
+    .attr("class", "legend")
+    .attr("x", width - 65)
+    .attr("y", 25)
+    .attr("height", 100)
+    .attr("width", 100);
+
+  legend.append("rect")
+          .attr("x", margin.left + 30)
+          .attr("y", -30)
+          .attr("width", 20)
+          .attr("height", 20)
+          .style("fill", "#818C30");
+
+  legend.append("text")
+          .attr("x", margin.left + 55)
+          .attr("y", -16)
+          .attr("width", 60)
+          .attr("height", 20)
+          .text("Approved")
+          .attr('class', 'legend');
+
+          legend.append("rect")
+          .attr("x", margin.left + 120)
+          .attr("y", -30)
+          .attr("width", 20)
+          .attr("height", 20)
+          .style("fill", "#F27244");
+
+          legend.append("text")
+          .attr("x", margin.left + 145)
+          .attr("y", -16)
+          .attr("width", 60)
+          .attr("height", 20)
+          .text("In Limbo")
+          .attr('class', 'legend');
+
+     
+
+  function n(err, data) {
+  // sort
+    data = data.sort(function(a,b) { return parseFloat(b.Received) - parseFloat(a.Received) } );
+
+
+
+    // set y domain
+    y.domain(d3.range(data.length))
+    .rangeBands([0, data.length * barHeight]);
+
+    // set height based on data
+    height = y.rangeExtent()[1];
+    d3.select(chart.node().parentNode)
+    .style('height', (height + margin.top + margin.bottom) + 'px')
+
+    // render the chart
+
+     
+
+    // add  bottom axes
+    var move = height + 1;
+
+    chart.append('g')
+    .attr('class', 'x axis bottom')
+    .attr('transform', 'translate(0,' + move + ')')
+    .call(xAxis.orient('bottom'));
+
+    var bars = chart.selectAll('.bar')
+    .data(data)
+    .enter().append('g')
+    .attr('class', 'bar')
+    .attr('transform', function(d, i) { return 'translate(0,'  + y(i) + ')'; });
+
+    
+
+    bars.append('rect')
+    .attr('class', 'applications')
+    .attr('height', y.rangeBand())
+    .attr('width', function(d) { return x(d.Received); })
+
+    bars.append('rect')
+    .attr('class', 'total2')
+    .attr('height', y.rangeBand())
+    .attr('width', function(d) { return x(d.Approved); })
+
+    bars.append('text')
+    .text(function(d) { return d.Limbo; })
+    .attr('class', 'total')
+    .attr('y', y.rangeBand() - 10)
+    .attr('x', function(d) { return x(d.Received) - spacing; });
+
+    bars.append('text')
+    .text(function(d) { return d.Approved; })
+    .attr('class', 'total2')
+    .attr('y', y.rangeBand() - 10)
+    .attr('x', function(d) { return x(d.Approved) + x(d.space);});
+
+   
+
+    bars.append('text')
+    .text(function(d) { return d.Cname; })
+    .attr('class', 'name')
+    .attr('y', y.rangeBand() - 10)
+    .attr('x', 0 - margin.left);
+
+
+
+    var insertLinebreaks = function (d) {
+    var el = d3.select(this);
+   
+
+    
+    var words = d.Cname.split(" ");
+    el.text('');
+   
+    var longest = words.reduce(function (a, b) { return a.length > b.length ? a : b; });
+   
+
+
+    for (var i = 0; i < words.length; i++) {
+        var tspan = el.append('tspan').text(words[i]);
+       
+        if (i > 0 && longest.length > 8)
+            tspan.attr('x', 0 - margin.left).attr('dy', '15');
+    }
+};
+
+bars.select('.bar text.name:last-child').each(insertLinebreaks);
+  };
+
+
+
+  // resize
+  d3.select(window).on('resize', resize);
+
+  function resize() {
+    // update width
+    width = parseInt(d3.select('#chart').style('width'), 10);
+    width = width - margin.left - margin.right;
+
+    // resize the chart
+    x.range([0, width]);
+    d3.select(chart.node().parentNode)
+    .style('height', (y.rangeExtent()[1] + margin.top + margin.bottom) + 'px')
+    .style('width', (width + margin.left + margin.right + 5) + 'px');
+
+    chart.selectAll('rect.background')
+    .attr('width', width);
+
+    chart.selectAll('rect.applications')
+    .attr('width', function(d) { return x(d.Received); });
+
+    chart.selectAll('rect.total2')
+    .attr('width', function(d) { return x(d.Approved); });
+
+    chart.selectAll('text.total')
+    .attr('x', function(d) { return x(d.Received) - spacing; });
+
+    chart.selectAll('text.total2')
+    .attr('x', function(d) { return x(d.Approved) + x(d.space); });
+
+
+    // update axes
+    chart.select('.x.axis.bottom').call(xAxis.orient('bottom'));
+  }
+  // call above functino to create graph and pass the json data
+  n([],mydata);
+
+
+  
+</script>    </div>
