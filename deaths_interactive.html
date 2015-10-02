@@ -1,12 +1,12 @@
-	<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Police Death Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Arrest-Related Deaths</title>
 <!-- Latest compiled and minified CSS -->
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1-rc2/jquery.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="js/data.js"></script>
 <script type="text/javascript" src="js/init.js"></script>
 
@@ -15,15 +15,15 @@
 <link rel=StyleSheet href="style.css" type="text/css">
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
-<body style="margin:0;padding:10px;">
+<body>
 	
 
 <div class="interactiveContainer">
 
-<div class="graphicHeader">Deaths in Police Custody</div>
-<div class="descrip">This is a by-the-numbers breakdown of the database we compiled from police custody death reports.</div>
+<div class="graphicHeader">Arrest-Related Deaths</div>
+<div class="descrip">This is a by-the-numbers breakdown of the arrest-related death reports filled out by New Jersey law enforcement agencies.</div>
 
-<div class="graphicSubhead">Since 2004, a total of <span class='titleamount'> 150 </span> people have died in New Jersey police custody.<p class="sort-text">Click below to sort by:</p></div>
+<div class="graphicSubhead">Since 2004, a total of <span class='titleamount'> 160 </span> people have died in New Jersey police custody.<p class="sort-text">Click below to sort by:</p></div>
 
 
 <div class="toolbar">
@@ -41,7 +41,7 @@ By Race/Ethnicity
 <div class="andItem and1">&</div>
 </div> -->
 <div class="button" rel="police">
-By Police Agencies (Top Five)
+By Police Agencies
 </div>
 <!-- <div class="toolItem2">
 <div class="andItem and2">&</div>
@@ -49,26 +49,21 @@ By Police Agencies (Top Five)
 <div class="button" rel="armed">
 Armed or Unarmed?
 </div>
-<div class="button" rel="Accident">
-By Manner of Death
-</div>
-<div class="button" rel="Unknown">
-By Manner of Death
-</div>
 <div class="button" rel="reset">
 Reset
 </div>
 </div>
 <div class="explainer" style="display: block;"><b>Legend</b><div class="descrip">Every circle = 1 case</div>
 </div>
-<div class="cases" style="display: block;"><div class="descrip"><b>Hover over a circle to see more details</b></div>
+<div class="explaincases" style="display: block;"><div class="descrip"><b>Hover over a circle to see more details</b></div>
 
 </div>
 <ul class="legend">
-    <li><span class="accident"></span> Accident</li>
-    <li><span class="delirium"></span> Excited Delirium</li>
+    
     <li><span class="homicide"></span> Killed by Police</li>
+    <li><span class="delirium"></span> Excited Delirium</li>
     <li><span class="natural"></span> Natural</li>
+    <li><span class="accident"></span> Accident</li>
     <li><span class="suicide"></span> Suicide</li>
     <li><span class="unknown"></span> Unknown</li>
 </ul>
@@ -77,8 +72,9 @@ Reset
 	
 </div>
 
-<div class="sourceline">Source: NJ State Police  </div>
 
 
 </body>
+<script src="http://s3.amazonaws.com/nj-data/responsive_iframes/src/pym.js" type="text/javascript"></script>
+    <script>var pymChild = new pym.Child();</script>
 </html>
